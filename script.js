@@ -4,6 +4,9 @@ const OPENING_DATE = '2027-01-22T17:00:00Z';
 const VIDEO_URL = 'https://www.youtube.com/shorts/Ay8lynMZ4mE';
 // auto распознаёт платформы и расширения; direct — прямая ссылка без расширения.
 const VIDEO_TYPE = 'auto';
+// auto: YouTube Shorts и соцсети — вертикально, обычные ссылки YouTube — горизонтально.
+// Для других случаев можно задать 'vertical' или 'horizontal'.
+const VIDEO_ORIENTATION = 'auto';
 const target = new Date(OPENING_DATE).getTime();
 const fields = ['days', 'hours', 'minutes', 'seconds'].map(id => document.getElementById(id));
 function updateCountdown() {
@@ -29,7 +32,7 @@ function videoEmbedUrl(input, mode = 'auto') {
     else if (host === 'youtube.com' || host === 'm.youtube.com') {
       id = url.searchParams.get('v') || url.pathname.match(/^\/(?:embed|shorts|live)\/([^/]+)/)?.[1];
     }
-    if (id && /^[\w-]{11}$/.test(id)) return { src: `https://www.youtube-nocookie.com/embed/${id}`, vertical: true };
+    if (id && /^[\w-]{11}$/.test(id)) return { src: `https://www.youtube-nocookie.com/embed/${id}`, vertical: /^\/shorts\//.test(url.pathname) };
     if (host === 'tiktok.com' || host === 'm.tiktok.com') {
       id = url.pathname.match(/\/video\/(\d+)/)?.[1];
       if (id) return { src: `https://www.tiktok.com/player/v1/${id}?autoplay=0`, vertical: true };
@@ -43,6 +46,8 @@ function videoEmbedUrl(input, mode = 'auto') {
 }
 const video = videoEmbedUrl(VIDEO_URL, VIDEO_TYPE);
 if (video) {
+  if (VIDEO_ORIENTATION === 'vertical') video.vertical = true;
+  if (VIDEO_ORIENTATION === 'horizontal') video.vertical = false;
   const frame = document.createElement(video.kind === 'direct' ? 'video' : 'iframe');
   frame.src = video.src;
   if (video.kind === 'direct') {
@@ -68,6 +73,7 @@ if (video) {
   const videoFrame = document.getElementById('video-frame');
   videoFrame.append(frame);
   videoFrame.classList.toggle('vertical', video.vertical);
+  videoFrame.classList.toggle('landscape', !video.vertical);
   document.getElementById('video-section').hidden = false;
 
   // На телефоне превью открывает плеер в увеличенном окне.
@@ -81,11 +87,21 @@ if (video) {
 
   const dialog = document.createElement('dialog');
   dialog.className = 'video-dialog';
+  dialog.classList.toggle('landscape', !video.vertical);
   dialog.setAttribute('aria-label', 'Видео Frantz');
   dialog.innerHTML = '<div class="video-dialog-content"><button type="button" class="video-close" aria-label="Закрыть видео">×</button><div class="video-dialog-screen"></div></div>';
   document.body.append(dialog);
   const screen = dialog.querySelector('.video-dialog-screen');
   const closeVideo = dialog.querySelector('.video-close');
+  if (video.kind === 'direct' && VIDEO_ORIENTATION === 'auto') {
+    frame.addEventListener('loadedmetadata', () => {
+      if (!frame.videoWidth || !frame.videoHeight) return;
+      const isVertical = frame.videoHeight > frame.videoWidth;
+      videoFrame.classList.toggle('vertical', isVertical);
+      videoFrame.classList.toggle('landscape', !isVertical);
+      dialog.classList.toggle('landscape', !isVertical);
+    });
+  }
   let previousOverflow = '';
   function setPreviewAccessibility() {
     const isPreview = mobileVideo.matches && !dialog.open;
