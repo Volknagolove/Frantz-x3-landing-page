@@ -373,26 +373,27 @@ h2 em, .hero-lead em { color: #e8c87a; background: linear-gradient(180deg,#fbe8a
 @media(max-width:800px) { .journey-backdrop[data-background="c3"] { background-position:12% center; } }
 @media(max-width:800px) { .journey-backdrop[data-background="c3"] { background-position:20% center; } }
 
-/* Дата открытия и отсчёт имеют отдельную визуальную иерархию. */
+/* Карточка открытия: дата, отсчёт и ОБТ. */
 .opening-panel { width:100%; max-width:520px; justify-self:end; }
 .opening-panel .opening-card { max-width:none; }
-.opening-panel .obt { margin-top:22px; }
-.countdown-block { padding:23px 12px 0; text-align:center; }
-.countdown-heading { margin:0 0 12px; color:#d7ba80; font:700 10px/1.3 Ubuntu,sans-serif; letter-spacing:.2em; }
-.countdown-block .countdown { margin:0; padding:0; border:0; gap:clamp(8px,1.6vw,19px); align-items:flex-start; }
-.countdown-block .countdown div { min-width:55px; gap:7px; }
-.countdown-block .countdown strong { font:700 38px/1 Ubuntu,sans-serif; color:#f0d59b; font-variant-numeric:tabular-nums; text-shadow:0 2px 18px #0009; }
+.opening-panel .date { grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; }
+.opening-panel .date::before { left:33.333%; }
+.opening-panel .date::after { left:66.666%; }
+.opening-panel .obt { margin-top:0; }
+.countdown-block { margin-top:22px; padding:19px 0; border-top:1px solid #665741; text-align:center; }
+.countdown-block .countdown { margin:0; padding:0; border:0; gap:clamp(6px,1.2vw,14px); align-items:flex-start; }
+.countdown-block .countdown div { min-width:48px; gap:6px; }
+.countdown-block .countdown strong { font:700 27px/1 Ubuntu,sans-serif; color:#f0d59b; font-variant-numeric:tabular-nums; }
 .countdown-block .countdown small { font-size:10px; }
-.countdown-block .countdown i { font:normal 27px/1 Ubuntu,sans-serif; color:#a68b5b; }
+.countdown-block .countdown i { font:normal 20px/1 Ubuntu,sans-serif; color:#a68b5b; }
 @media(max-width:800px) { .opening-panel { max-width:520px; justify-self:start; } .opening-panel .opening-card { margin-bottom:0; } }
 @media(max-width:480px) {
-  .opening-panel .obt { margin-top:16px; }
-  .countdown-block { padding:19px 0 0; }
-  .countdown-block .countdown { gap:clamp(5px,2vw,12px); }
-  .countdown-block .countdown div { min-width:47px; gap:6px; }
-  .countdown-block .countdown strong { font-size:30px; }
+  .countdown-block { margin-top:17px; padding:16px 0; }
+  .countdown-block .countdown { gap:clamp(3px,1.5vw,8px); }
+  .countdown-block .countdown div { min-width:40px; gap:6px; }
+  .countdown-block .countdown strong { font-size:23px; }
   .countdown-block .countdown small { font-size:8px; }
-  .countdown-block .countdown i { font-size:22px; }
+  .countdown-block .countdown i { font-size:18px; }
 }
 
 /* Широкоформатные ролики занимают отдельную пропорциональную область. */
@@ -405,4 +406,76 @@ h2 em, .hero-lead em { color: #e8c87a; background: linear-gradient(180deg,#fbe8a
 @media(max-width:800px) {
   .journey-video:has(.video-frame.landscape) { width:min(100%,440px); }
   .journey-video .video-frame.landscape { width:100%; }
+}
+
+/* Афиша открытия в духе четвёртого варианта. */
+.opening-card { background:linear-gradient(180deg,rgba(41,32,24,.96) 0%,rgba(29,24,20,.95) 72%,rgba(27,23,19,.88) 100%),url('assets/tower-image.webp') center bottom/cover; }
+.opening-panel .card-border { padding:28px 24px 25px; }
+.opening-panel .card-border > .ornament { width:min(230px,80%); margin:9px auto 19px; }
+.opening-panel .date { display:flex; align-items:baseline; justify-content:center; gap:clamp(8px,1.1vw,15px); white-space:nowrap; }
+.opening-panel .date::before,.opening-panel .date::after { content:none; }
+.opening-panel .date > b { font:normal clamp(52px,5vw,72px)/1 Germania,Georgia,serif; }
+.opening-panel .date > span { color:#f4e9d3; font:700 clamp(20px,2vw,27px)/1.1 Messiri,Georgia,serif; }
+.opening-panel .countdown-block { margin:21px 0 0; padding:16px 6px; border:1px solid #6c583a; border-radius:3px; background:linear-gradient(180deg,rgba(24,20,16,.56),rgba(44,34,24,.48)); box-shadow:inset 0 1px rgba(232,202,139,.07); }
+.opening-panel .countdown { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; }
+.opening-panel .countdown > div { min-width:0; gap:7px; position:relative; }
+.opening-panel .countdown > div + i { display:none; }
+.opening-panel .countdown > div:not(:first-child)::before { content:""; position:absolute; left:0; top:2px; bottom:2px; width:1px; background:linear-gradient(transparent,#a6854e,transparent); }
+.opening-panel .countdown strong { font-size:27px; }
+.opening-panel .countdown small { font-size:9px; }
+.opening-panel .obt { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:0 10px; margin-top:19px; padding:0; border:0; }
+.opening-panel .obt::before,.opening-panel .obt::after { content:""; flex:1 1 30px; max-width:55px; height:1px; }
+.opening-panel .obt::before { background:linear-gradient(90deg,transparent,#9d8154); }
+.opening-panel .obt::after { background:linear-gradient(90deg,#9d8154,transparent); }
+.opening-panel .obt span { color:#d9bb7e; font:700 11px Ubuntu,sans-serif; letter-spacing:.12em; }
+.opening-panel .obt strong { color:#eee3cf; font:700 15px Messiri,Georgia,serif; }
+@media(max-width:480px) {
+  .opening-panel .card-border { padding:24px 12px 22px; }
+  .opening-panel .date { gap:7px; }
+  .opening-panel .date > b { font-size:clamp(48px,14vw,64px); }
+  .opening-panel .date > span { font-size:clamp(17px,5vw,23px); }
+  .opening-panel .countdown-block { margin-top:18px; padding:14px 3px; }
+  .opening-panel .countdown strong { font-size:24px; }
+  .opening-panel .countdown small { font-size:8px; letter-spacing:.13em; }
+  .opening-panel .obt { margin-top:16px; }
+  .opening-panel .obt strong { font-size:14px; }
+}
+
+/* Декоративная афиша: фигурная рамка и отдельный картуш таймера. */
+.opening-panel .opening-card { position:relative; border:0; border-radius:0; padding:0; background:transparent; box-shadow:none; }
+.opening-panel .opening-card::after { content:none; }
+.opening-frame { position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none; overflow:visible; }
+.frame-outline,.frame-inline,.frame-corners { fill:none; stroke:url(#frameGold); vector-effect:non-scaling-stroke; }
+.frame-outline { stroke-width:2; }
+.frame-inline { stroke-width:1; opacity:.8; }
+.frame-corners { stroke-width:1.1; opacity:.8; }
+.opening-panel .card-border { position:relative; z-index:1; overflow:hidden; border:0; border-radius:0; padding:36px 43px 39px; clip-path:url(#openingShape); background:linear-gradient(180deg,rgba(24,19,16,.56),rgba(25,20,17,.36) 55%,rgba(25,20,17,.25)),url('assets/opening-landscape.webp') center / 100% 100% no-repeat; }
+.opening-panel .card-border > .eyebrow { color:#f0d39a; font:700 14px/1.3 Georgia,serif; letter-spacing:.24em; }
+.opening-panel .card-border > .ornament { width:min(260px,90%); margin:10px auto 17px; }
+.opening-panel .date { gap:clamp(8px,1.1vw,15px); }
+.opening-panel .date > b { font:700 clamp(54px,5.6vw,78px)/1 Georgia,serif; letter-spacing:-.05em; }
+.opening-panel .date > span { font:700 clamp(21px,2.25vw,30px)/1 Georgia,serif; }
+.opening-panel .countdown-block { position:relative; margin:24px 0 0; padding:1px; border:0; border-radius:0; background:linear-gradient(120deg,#856132,#e1bd78 47%,#8d6935); clip-path:polygon(6% 0,94% 0,96% 20%,100% 50%,96% 80%,94% 100%,6% 100%,4% 80%,0 50%,4% 20%); box-shadow:none; }
+.opening-panel .countdown-block::before,.opening-panel .countdown-block::after { content:'✦'; position:absolute; top:50%; z-index:1; transform:translateY(-50%); color:#e3c17e; font-size:15px; line-height:1; text-shadow:0 0 10px #e9c474; }
+.opening-panel .countdown-block::before { left:4%; }
+.opening-panel .countdown-block::after { right:4%; }
+.opening-panel .countdown { padding:14px 9%; background:linear-gradient(180deg,#30251d,#221b16); clip-path:polygon(6% 0,94% 0,96% 20%,100% 50%,96% 80%,94% 100%,6% 100%,4% 80%,0 50%,4% 20%); }
+.opening-panel .countdown strong { color:#f3deb0; font:700 26px/1 Georgia,serif; }
+.opening-panel .countdown small { color:#dfcead; font:700 9px/1.1 Georgia,serif; letter-spacing:.16em; }
+.opening-panel .obt { margin-top:21px; gap:0 9px; }
+.opening-panel .obt span { color:#f0ddba; font:700 12px Georgia,serif; letter-spacing:.15em; }
+.opening-panel .obt strong { color:#f0ddba; font:700 15px Georgia,serif; }
+.opening-panel .obt span::after { content:'·'; margin-left:9px; color:#cfaa67; }
+@media(max-width:480px) {
+  .opening-panel .card-border { padding:32px 26px 34px; }
+  .opening-panel .card-border > .eyebrow { font-size:11px; letter-spacing:.2em; }
+  .opening-panel .date { gap:7px; }
+  .opening-panel .date > b { font-size:clamp(43px,13vw,64px); }
+  .opening-panel .date > span { font-size:clamp(16px,4.8vw,23px); }
+  .opening-panel .countdown-block { margin-top:19px; }
+  .opening-panel .countdown { padding:13px 9%; }
+  .opening-panel .countdown strong { font-size:22px; }
+  .opening-panel .countdown small { font-size:8px; letter-spacing:.09em; }
+  .opening-panel .obt { margin-top:18px; }
+  .opening-panel .obt strong { font-size:13px; }
 }
